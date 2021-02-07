@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="../static/CSS/style.css">
+    <title>Login</title>
+</head>
+<body class="bg">
+    <section class="container-fluid">
+        <div class="row">
+            <div class="col-md-4 col-sm-4 col-xs-12">
+            </div>
+            <div class="col-md-4 col-sm-4 col-xs-12">
+                <form class="form-container">
+                    <h1 class="display-4">Login calculadora</h1>
+                    <div class="form-group">
+                        <label for="textoEmail">Dirección de correo</label>
+                        <input type="email" class="form-control" id="emailInput" placeholder="ejemplo@mail.es">
+                    </div>
+                    <div class="form-group">
+                        <label for="textoContraseña">Contraseña</label>
+                        <input type="password" class="form-control" id="contraseñaInput" placeholder="contraseña">
+                    </div>
+                    <div class="row mt-4">
+                        <button class="btn btn-success ">Log In</button>
+                        <input type="button" value="Registrarse" onclick="location.href='./Register.html'" class="btn btn-warning btn-block  mt-2"></input>
+                    </div>
+                    <a></a>
+                </form>
+            </div>
+            <div class="col-md-4 col-sm-4 col-xs-12"></div>
+        </div>
+    </section>
+    <script src="../static/scripts/login.js"></script>
+</body>
+</html>

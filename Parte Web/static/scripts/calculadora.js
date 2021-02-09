@@ -5,7 +5,7 @@ $(document).ready(function () {
         var vop = document.getElementById("op").value;
         var vres = "";
 
-        var asd = $.get("https://6ceb939oi9.execute-api.eu-west-2.amazonaws.com/prueba_calculadora", { method: "operacion", op1: vop1, op2: vop2, op: vop }, function (data) {
+        var asd = $.get("URL API GATEWAY", { method: "operacion", op1: vop1, op2: vop2, op: vop }, function (data) {
                 function jsonEscape(str) {
                     return str.replace(/\n/g, "\\\\n").replace(/\r/g, "\\\\r").replace(/\t/g, "\\\\t");
                 }

@@ -15,9 +15,9 @@ $(document).ready(function () {
             var json = data;
             var response = JSON.stringify(json);
     
-            if (response['datosCorrectos'] == true) {
-                createCookie(response['user']);
-                location.href = 'calculadora_lambda.html';
+            if (response['datosCorrectos'] == 'True') {
+                createCookie(response['mail']);
+                window.location.href = '/calculadora_lambda.html';
             }
             else {
                 alert('Datos incorrectos');
@@ -25,16 +25,15 @@ $(document).ready(function () {
         });
     });
 });
-
 function createCookie(email){
     var cookie = 'email=' + encodeURIComponent(email);
-    cookie += '; expires=Thu, 31 Dec 2099 23:59:59 GMT';
+    cookie += '; expires=Thu, 31 Dec 2099 23:59:59 GMT; path=/';
     document.cookie = cookie;
     alert('Cookie establecida correctamente');
 }
 function checkCookie(){
     if(readCookie('email') != null){
-        location.href = 'calculadora_lambda.html';
+        window.location.replace('/calculadora_lambda.html');
     }
 }
 function readCookie(cookieName){

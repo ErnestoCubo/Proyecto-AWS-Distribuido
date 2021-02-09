@@ -3,7 +3,7 @@ import logging
 import pymysql
 import json
 
-rds_host = "3.83.133.16"
+rds_host = ""
 
 username = "admin"
 password ="password"

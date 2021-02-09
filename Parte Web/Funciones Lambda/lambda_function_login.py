@@ -1,15 +1,16 @@
 import sys
 import logging
-import pymysql import json
+import pymysql
+import json
 
-rds_host = ""
+rds_host = "3.83.133.16"
 
 username = "admin"
 password ="password"
 dbname = "Distribuidos"
-
+dbport = 30623
 try:
-    conn = pymysql.connect(rds_host, user=username, passwd=password, db=dbname, connect_timeout=10)
+    conn = pymysql.connect(rds_host, user=username, passwd=password, db=dbname, port=dbport, connect_timeout=10)
 except pymysql.MySQLError as e:
     print (e)
     sys.exit()
@@ -20,8 +21,8 @@ def lambda_handler(event, context):
     try:
         with conn.cursor() as cur:
             #Miro el mail primero
-            cur.execute("SELECT email FROM usuarios WHERE email ='"+email+"'")
-            cur.commit()
+            query ="""SELECT email FROM usuarios WHERE email =%s"""
+            cur.execute(query, email)
             #mail inexistente
             if cur.fetchone() == None:
                 return {
@@ -31,24 +32,25 @@ def lambda_handler(event, context):
                 }
             else:
                 #Si esxiste el mail pasamos a la contraseña
-                cur.execute("SELECT email, md5 FROM usuarios WHERE md5 ='"+md5+"' and email='"+email"'")
-                cur.commit()
-                columnas = 0
-                for row in cur:
-                    columnas+=1
-                if columnas > 0:
-                    'statusCode':200, 
-                    'headers': { 'Access-Control-Allow-Origin' : '*' },
-                    'body':json.dumps({'mail' : email, 'datosCorrectos' :  'True'})
+                query = """SELECT email, md5 FROM usuarios WHERE md5=%s and email=%s"""
+                cur.execute(query,(email, md5))
+                if cur.fetchone() == None:
+                    return{
+                        'statusCode':200, 
+                        'headers': { 'Access-Control-Allow-Origin' : '*' },
+                        'body':json.dumps({'mail' : email, 'datosCorrectos' :  'True'})
+                    }
                 else:
                     return {
-                    'statusCode':200, 
-                    'headers': { 'Access-Control-Allow-Origin' : '*' },
-                    'body':json.dumps({'datosCorrectos' :  'False'})
+                        'statusCode':200, 
+                        'headers': { 'Access-Control-Allow-Origin' : '*' },
+                        'body':json.dumps({'datosCorrectos' :  'False'})
+                    }
     except pymysql.MySQLError as e:
         print(e)
         sys.exit()
-    return
-        'statusCode':200, 
-        'headers': { 'Access-Control-Allow-Origin' : '*' }, 
-        'body':json.dumps({'datosCorrectos' :  False})
+        return{
+            'statusCode':200, 
+            'headers': { 'Access-Control-Allow-Origin' : '*' }, 
+            'body':json.dumps({'datosCorrectos' :  False})
+        }

@@ -4,7 +4,7 @@ import pymysql
 import json
 import math
 
-rds_host = ""
+rds_host = "3.83.133.16"
 
 username = "admin"
 password ="password"

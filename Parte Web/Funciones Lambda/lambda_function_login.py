@@ -3,7 +3,7 @@ import logging
 import pymysql
 import json
 
-rds_host = ""
+rds_host = "3.83.133.16"
 
 username = "admin"
 password ="password"
@@ -23,8 +23,10 @@ def lambda_handler(event, context):
             #Miro el mail primero
             query ="""SELECT email FROM usuarios WHERE email =%s"""
             cur.execute(query, email)
+            conn.commit()
+            print(cur.rowcount)
             #mail inexistente
-            if cur.fetchone() == None:
+            if (cur.rowcount < 1):
                 return {
                     'statusCode':200, 
                     'headers': { 'Access-Control-Allow-Origin' : '*' },
@@ -32,13 +34,22 @@ def lambda_handler(event, context):
                 }
             else:
                 #Si esxiste el mail pasamos a la contraseña
-                query = """SELECT email, md5 FROM usuarios WHERE md5=%s and email=%s"""
-                cur.execute(query,(email, md5))
-                if cur.fetchone() == None:
+                query = """SELECT * FROM usuarios WHERE email=%s and md5=%s"""
+                cur.execute(query, (email, md5))
+                conn.commit()
+                print(cur.fetchall())
+                print(cur.rowcount)
+                if cur.rowcount == 1:
+                    redirection =""
+                    query = """SELECT pagename FROM webpages WHERE type='calculadora'"""
+                    cur.execute(query)
+                    conn.commit()
+                    for row in cur:
+                        redirection = row[0]
                     return{
                         'statusCode':200, 
                         'headers': { 'Access-Control-Allow-Origin' : '*' },
-                        'body':json.dumps({'mail' : email, 'datosCorrectos' :  'True'})
+                        'body':json.dumps({'mail' : email, 'datosCorrectos' :  'True', 'redirect' : redirection})
                     }
                 else:
                     return {

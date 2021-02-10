@@ -4,14 +4,14 @@ import pymysql
 import json
 import math
 
-rds_host = ""
+rds_host = "3.83.133.16"
 
 username = "admin"
 password ="password"
-dbname = "calculadora"
-
+dbname = "Distribuidos"
+dbport = 30623
 try:
-    conn = pymysql.connect(rds_host, user=username, passwd=password, db=dbname, connect_timeout=10)
+    conn = pymysql.connect(rds_host, user=username, passwd=password, db=dbname, port=dbport, connect_timeout=10)
 except pymysql.MySQLError as e:
     print (e)
     sys.exit()
@@ -59,16 +59,16 @@ def switch(case, a, b):
 
     
 def lambda_handler(event , context):
-    op1 = float(event["queryStringParameters"]["op1"])
-    op2 = float(event["queryStringParameters"]["op2"])
-    op = (event["queryStringParameters"]["op"])
-    res = switch(op,op1,op2)
-    redirectPage = ""
+    op1=float(event["queryStringParameters"]["op1"])
+    op2=float(event["queryStringParameters"]["op2"])
+    op=(event["queryStringParameters"]["op"])
+    res=switch(op,op1,op2)
+    redirectPage=""
     try:
         with conn.cursor() as cur:
             cur.execute("insert into resultados values ( "+str(op1)+","+ str(op2)+",'"+op+"',"+ str(res)+")")
             conn.commit()
-            cur.execute("select webpage from webpages where type='success'")
+            cur.execute("select pagename from webpages where type='success'")
             conn.commit()
             for row in cur:
                 redirectPage=row[0]
